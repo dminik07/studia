@@ -141,3 +141,8 @@ private void DK_67708_TextBox_KeyPress(object sender, KeyPressEventArgs e)
         MessageBox.Show("Można wpisywać tylko cyfry.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Warning);
     }
 }
+
+
+
+
+~~AUTORZY KODU ---/ Szanowny Mgr. Piotr B, Dominik K, Chat GPT
