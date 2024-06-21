@@ -1,0 +1,143 @@
+___________________________________________________________________________________________________________________________________________________________________________
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Automatyczne generowanie kontrolek
+Fragmenty kodu:
+private void DK_67708_BtAutoGenerate_Click(object sender, EventArgs e)
+{
+    DK_67708_ClearControls();
+    DK_67708_ClearParameters();
+    DK_67708_AutoGenerateControls();
+}
+
+private void DK_67708_AutoGenerateControls()
+{
+    GroupBox gb = (GroupBox)this.Controls.Find("GbWorkPanel", true)[0];
+    int topMargin = 20;
+    int leftMargin = 15;
+    int labelWidth = 40;
+    int labelHeight = 25;
+    int nbOfControlls = 110;
+    string controlName = "";
+    Point controllPoint = new Point(leftMargin, topMargin);
+    Font labelFont = new Font("Tahoma", 12, FontStyle.Bold);
+    Font textboxFont = new Font("Tahoma", 8, FontStyle.Bold);
+    Color labelColor = Color.FromKnownColor(KnownColor.Control);
+    Color textboxColor = Color.Bisque;
+    Color foreColor = Color.Red;
+
+    for (int i = 1; i <= nbOfControlls; i++)
+    {
+        controlName = "Lb" + i.ToString();
+        Label newLabel = crl.DK_67708_CreateLabel(controlName, controllPoint, labelFont, labelColor, foreColor, labelWidth, labelHeight, i.ToString());
+        gb.Controls.Add(newLabel);
+        controllPoint.X = controllPoint.X + 40;
+        controlName = "Tb" + i.ToString();
+        TextBox newTextBox = crl.DK_67708_CreateTextBox(controlName, controllPoint, 60, 15, textboxFont, textboxColor, foreColor);
+        gb.Controls.Add(newTextBox);
+        controllPoint.X = leftMargin;
+        if (controllPoint.Y + 35 > gb.Height)
+        {
+            leftMargin = leftMargin + 130;
+            controllPoint.X = leftMargin;
+            controllPoint.Y = topMargin;
+        }
+        else
+        {
+            controllPoint.Y = controllPoint.Y + 25;
+        }
+        if (controllPoint.X + 125 > gb.Width)
+        {
+            i = nbOfControlls;
+        }
+    }
+}
+
+
+
+
+___________________________________________________________________________________________________________________________________________________________________________
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+Ręczne generowanie kontrolek
+Fragmenty kodu:
+
+
+
+private void DK_67708_BtManualGenerate_Click(object sender, EventArgs e)
+{
+    DK_67708_ClearParameters();
+    DK_67708_LoadManualParameters();
+}
+
+private void DK_67708_BtnGenerate_Click(object sender, EventArgs e)
+{
+    try
+    {
+        int x = int.Parse(DK_67708_TbMarginLeft.Text);
+        int y = int.Parse(DK_67708_TbMarginTop.Text);
+        int width = int.Parse(DK_67708_TbWidth.Text);
+        int height = int.Parse(DK_67708_TbHeight.Text);
+        Font font = new Font("Tahoma", 12, FontStyle.Bold);
+        Color backColor = DK_67708_BtnBackColor.BackColor;
+        Color foreColor = DK_67708_BtnForeColor.BackColor;
+        string text = DK_67708_TbText.Text;
+        GroupBox gb = (GroupBox)this.Controls.Find("GbWorkPanel", true)[0];
+
+        Label newLabel = crl.DK_67708_CreateLabel("LbManual", new Point(x, y), font, backColor, foreColor, width, height, text);
+        gb.Controls.Add(newLabel);
+
+        TextBox newTextBox = crl.DK_67708_CreateTextBox("TbManual", new Point(x + width + 10, y), width, height, font, backColor, foreColor);
+        gb.Controls.Add(newTextBox);
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show("Wprowadź prawidłowe wartości dla parametrów.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+}
+
+
+___________________________________________________________________________________________________________________________________________________________________________
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+Czyszczenie kontrolek i parametrów
+Fragmenty kodu:
+private void DK_67708_BtClear_Click(object sender, EventArgs e)
+{
+    DK_67708_ClearControls();
+    DK_67708_ClearParameters();
+}
+
+private void DK_67708_ClearControls()
+{
+    GroupBox gb = (GroupBox)this.Controls.Find("GbWorkPanel", true)[0];
+    if (gb.Controls.Count > 0)
+    {
+        gb.Controls.Clear();
+    }
+}
+
+private void DK_67708_ClearParameters()
+{
+    DK_67708_TbMarginLeft.Clear();
+    DK_67708_TbMarginTop.Clear();
+    DK_67708_TbWidth.Clear();
+    DK_67708_TbHeight.Clear();
+    DK_67708_TbText.Clear();
+}
+
+___________________________________________________________________________________________________________________________________________________________________________
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Walidacja danych wejściowych
+Fragmenty kodu:
+private void DK_67708_TextBox_KeyPress(object sender, KeyPressEventArgs e)
+{
+    if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+    {
+        e.Handled = true;
+        MessageBox.Show("Można wpisywać tylko cyfry.", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+    }
+}
